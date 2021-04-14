@@ -1,6 +1,9 @@
 <template>
+  <div>
     <div id="rotation">
-      <v-img :height="height" :width="width" :src="image" />
+      <h1>{{ title }}</h1>
+      <p>{{ text }}</p>
+    </div>
   </div>
 </template>
 
@@ -8,30 +11,20 @@
 import anime from "animejs";
 export default {
   name: "MotionImage",
-  props: {
-    height: {
-      type: Number,
-      required: false,
-      default: 246,
-    },
-    width: {
-      type: Number,
-      required: false,
-      default: 350.5,
-    },
-    image: {
-      type: String,
-      required: true,
-    },
-    mounted() {
+  data() {
+    return {
+      title: "Header",
+      text: "Hello Vue.js!",
+    };
+  },
+  methods: {
+    rotaion() {
       anime({
         targets: "#rotation",
-        rotate: 1800,
+        translateX: 500,
         loop: true,
       });
     },
   },
 };
-
 </script>
-

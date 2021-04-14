@@ -1,7 +1,7 @@
 <template>
   <transition>
-    <div v-show="visible">
-      <div class="image">
+    <div class="image">
+      <div class="m-5 element js-animation">
         <v-img :src="require('@/assets/thumbnail.png')" />
       </div>
     </div>
@@ -15,16 +15,24 @@ export default {
       visible: false,
     };
   },
-  created() {
-    window.addEventListener("scroll", this.handleScroll);
-  },
   methods: {
-    handleScroll() {
-      this.scrollY = window.scrollY;
-      if (!this.visible) {
-        this.visible = window.scrollY > 2400;
-      } else if (window.scrollY < 1800) {
-        this.visible = !this.visible;
+    showElementAnimation() {
+      var element = document.getElementsByClassName("js-animation");
+      if (!element) return; // 要素がなかったら処理をキャンセル
+
+      var showTiming = window.innerHeight > 768 ? 200 : 40; // 要素が出てくるタイミングはここで調整
+      var scrollY = window.pageYOffset; //ブラウザトップを基準としスクロール量を返す
+      var windowH = window.innerHeight; //現在のウィンドウの内部の高さをピクセル単位で返す
+      for (var i = 0; i < element.length; i++) {
+        var elemClientRect = element[i].getBoundingClientRect(); // 画面からどのくらい上から、左から離れているかを取得する
+        var elemY = scrollY + elemClientRect.top; //（ブラウザトップからのスクロール量）＋（画面の上から、要素の上までの距離）
+        if (scrollY + windowH - showTiming > elemY) {
+          element[i].classList.add("is-show"); //is-showクラスが追加されふわっとモーションが表示される
+        } else if (scrollY + windowH < elemY) {
+          // 上にスクロールして再度非表示にする場合はこちらを記述
+          element[i].classList.remove("is-show");
+        }
+        window.addEventListener("scroll");
       }
     },
   },
@@ -32,28 +40,17 @@ export default {
 </script>
 
 <style scoped>
-.v-enter {
-  /* 最初に表示されたくないので０ */
+.js-animation {
   opacity: 0;
+  visibility: hidden;
+  transform: translatey(80px);
+  transition: all 1s;
 }
-
-.v-enter-active,
-.v-leave-active {
-  /* transition している間 */
-  animation-timing-function: linear;
-  transition: opacity 300ms ease-out;
-}
-
-.v-enter-to {
-  /* 終わったら表示して欲しいので 1 */
+.js-animation.is-show {
   opacity: 1;
-  transform: translateY(50px);
+  visibility: visible;
+  transform: translateY(0px);
 }
-
-.v-leave-to {
-  opacity: 0;
-}
-/* ヘッダーロゴ フェード処理ここまで */
 .image {
   width: 300px;
   height: 200px;

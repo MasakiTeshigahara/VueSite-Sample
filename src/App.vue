@@ -21,34 +21,30 @@
             />
           </div>
         </div>
-        <div class="m-5 element js-animation">
-          <div class="image1">
-            <v-img src="@/assets/thumbnail.png" max-width="300px"></v-img>
-          </div>
+        <div class="image1">
+          <motion-image-2 />
         </div>
       </v-row>
       <!--------------- コンテンツ2 ---------------->
       <v-row justify="center">
         <div class="content1">
-          <div class="element js-animation">
-            <message
-              title="ふわっとモーション"
-              text="テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト"
-            >
-            </message>
-            <div class="btn1">
-              <IconButton
-                icon="mdi-open-in-new"
-                name="YouTubeチャンネル"
-                @click="clickButton(1)"
-                class="ma-1"
-              />
-            </div>
+          <message
+            title="ふわっとモーション"
+            text="テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト"
+          >
+          </message>
+          <div class="btn1">
+            <IconButton
+              icon="mdi-open-in-new"
+              name="YouTubeチャンネル"
+              @click="clickButton(1)"
+              class="ma-1"
+            />
           </div>
         </div>
         <transition>
           <div class="image1">
-            <v-img src="@/assets/thumbnail.png" max-width="300px"></v-img>
+            <motion-image-2 />
           </div>
         </transition>
       </v-row>
@@ -69,35 +65,10 @@
             />
           </div>
         </div>
-        <div class="m-5 element js-animation">
-          <div class="image1">
-            <v-img src="@/assets/thumbnail.png" max-width="300px"></v-img>
-          </div>
+        <div class="image1">
+          <motion-image-2 />
         </div>
       </v-row>
-      <!---------------- コンテンツ4 ------------------>
-      <div class="m-5 element js-animation">
-        <v-row justify="center">
-          <div class="content1">
-            <message
-              title="ふわっとモーション"
-              text="テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト"
-            >
-            </message>
-            <div class="btn1">
-              <IconButton
-                icon="mdi-open-in-new"
-                name="YouTubeチャンネル"
-                @click="clickButton(1)"
-                class="ma-1"
-              />
-            </div>
-          </div>
-          <div class="image1">
-            <v-img src="@/assets/thumbnail.png" max-width="300px"></v-img>
-          </div>
-        </v-row>
-      </div>
       <!----------- スライドショー ----------->
       <v-row justify="center">
         <div class="content1">
@@ -127,6 +98,11 @@
           </div>
         </div>
       </v-row>
+      <slide-show-2 />
+      <div id="rotation">
+        <p>kaitenn</p>
+      </div>
+      <motion-image />
       <sumple-button />
       <slide-show />
       <motion-text />
@@ -141,9 +117,11 @@
 import HeadingSubheading from "./components/HeadingSubheading.vue";
 import IconButton from "./components/IconButton.vue";
 import message from "./components/message.vue";
+import MotionImage from "./components/MotionImage.vue";
 import MotionImage2 from "./components/MotionImage2.vue";
 import MotionText from "./components/MotionText.vue";
 import SlideShow from "./components/SlideShow.vue";
+import SlideShow2 from "./components/SlideShow2.vue";
 import SumpleButton from "./components/SumpleButton.vue";
 export default {
   components: {
@@ -154,6 +132,8 @@ export default {
     MotionImage2,
     SumpleButton,
     SlideShow,
+    MotionImage,
+    SlideShow2,
   },
   methods: {
     clickButton(value) {
@@ -161,30 +141,10 @@ export default {
     },
   },
 };
-function showElementAnimation() {
-  var element = document.getElementsByClassName("js-animation");
-  if (!element) return; // 要素がなかったら処理をキャンセル
-
-  var showTiming = window.innerHeight > 768 ? 200 : 40; // 要素が出てくるタイミングはここで調整
-  var scrollY = window.pageYOffset; //ブラウザトップを基準としスクロール量を返す
-  var windowH = window.innerHeight; //現在のウィンドウの内部の高さをピクセル単位で返す
-  for (var i = 0; i < element.length; i++) {
-    var elemClientRect = element[i].getBoundingClientRect(); // 画面からどのくらい上から、左から離れているかを取得する
-    var elemY = scrollY + elemClientRect.top; //（ブラウザトップからのスクロール量）＋（画面の上から、要素の上までの距離）
-    if (scrollY + windowH - showTiming > elemY) {
-      element[i].classList.add("is-show"); //is-showクラスが追加されふわっとモーションが表示される
-    } else if (scrollY + windowH < elemY) {
-      // 上にスクロールして再度非表示にする場合はこちらを記述
-      element[i].classList.remove("is-show");
-    }
-  }
-}
-showElementAnimation();
-window.addEventListener("scroll", showElementAnimation);
 const img_src = [
-  "https://picsum.photos/300/200/?blur",
-  "https://picsum.photos/300/200/?blur",
-  "https://picsum.photos/seed/picsum/300/200",
+  "@/assets/thumbnail2.png",
+  "assets/thumbnail3.png",
+  "assets/thumbnail4.png",
 ];
 let num = -1;
 
@@ -244,17 +204,6 @@ setInterval(slide_time, 2500);
   padding-top: 500px;
   padding-left: 50px;
 }
-.js-animation {
-  opacity: 0;
-  visibility: hidden;
-  transform: translatey(80px);
-  transition: all 1s;
-}
-.js-animation.is-show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0px);
-}
 .slider {
   max-width: 300px;
 }
@@ -287,5 +236,10 @@ setInterval(slide_time, 2500);
 
 .MoitonContainer {
   margin-top: 50px;
+}
+#elem .square {
+  width: 60px;
+  height: 60px;
+  background: #39a2ae;
 }
 </style>
